@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MapController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +27,5 @@ route::post('/', [LoginController::class, 'logout'])->name('logout');
 Route::get('/dashboard', function () {
     return view('dashboard/index');
 })->middleware('auth');
+
+route::get('map',[MapController::class,'index'])->middleware('auth');
