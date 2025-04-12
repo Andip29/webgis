@@ -54,14 +54,6 @@
     
     <li class="sidebar-title">Forms &amp; Tables</li>
     
-
-    <li
-        class="sidebar-item  ">
-        <a href="form-layout.html" class='sidebar-link'>
-            <i class="bi bi-file-earmark-medical-fill"></i>
-            <span>Form Layout</span>
-        </a>
-    </li>
     
     <li
         class="sidebar-item  has-sub">
@@ -71,7 +63,7 @@
         </a>
         <ul class="submenu ">
             <li class="submenu-item ">
-                <a href="form-editor-quill.html">Quill</a>
+                <a href="{{ route('odps.index') }}">Quill</a>
             </li>
             <li class="submenu-item ">
                 <a href="form-editor-ckeditor.html">CKEditor</a>
