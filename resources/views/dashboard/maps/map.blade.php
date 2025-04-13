@@ -43,9 +43,6 @@
 	// https://account.mapbox.com
 	mapboxgl.accessToken = '{{env("MAPBOX_KEY")}}';
 
-
-
-
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
@@ -54,7 +51,8 @@
         center: [107.840366, -6.989709]
     });
 
-    const geojson = {
+    
+    const odpGeoJSON = {
         type: 'FeatureCollection',
         features: [
             @foreach ($odps as $odp)
@@ -66,8 +64,8 @@
                     },
                     properties: {
                         title: "{{ $odp->name }}",
-                        description: "{{ $odp->deskripsi }}",
-                        image: "{{ asset('storage/' . $odp->gambar) }}"
+                        description: "{{ $odp->description }}",
+                        image: "{{ asset('storage/' . $odp->image) }}"
                     }
                 },
             @endforeach
@@ -75,7 +73,7 @@
     };
 
     // add markers to map
-    for (const feature of geojson.features) {
+    for (const feature of odpGeoJSON.features) {
         const el = document.createElement('div');
         el.className = 'marker';
 
@@ -99,6 +97,61 @@
                     </tr>
                     <tr>
                         <td>jumlah</td>
+                        <td>${feature.properties.description}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>`
+        )
+    )
+  .addTo(map);
+}
+
+const calonPelangganGeoJSON = {
+        type: 'FeatureCollection',
+        features: [
+            @foreach ($calonPelanggans as $calonPelanggan)
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [{{ $calonPelanggan->long }}, {{ $calonPelanggan->lat }}]
+                    },
+                    properties: {
+                        title: "{{ $calonPelanggan->name }}",
+                        description: "{{ $calonPelanggan->description }}",
+                        image: "{{ asset('storage/' . $calonPelanggan->image) }}"
+                    }
+                },
+            @endforeach
+        ]
+    };
+
+    // add markers to map
+    for (const feature of calonPelangganGeoJSON.features) {
+        const el = document.createElement('div');
+        el.className = 'marker';
+
+  // make a marker for each feature and add to the map
+    // new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map); 
+    new mapboxgl.Marker(el)
+        .setLngLat(feature.geometry.coordinates)
+        .setPopup(
+        new mapboxgl.Popup({ offset: 25 }) // add popups
+            .setHTML(
+            `
+            <div style="overflow-y, auto; max-height: 400px, width:100%, ">
+                <table class="table table-borderless text-body">
+                    <tbody>
+                    <tr>
+                        <td>${feature.properties.title}</td>
+                    </tr>
+                    <tr>
+                        <td>image</td>
+                        <td><img src="${feature.properties.image}" loading="lazy" class="img-fluid"></td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
                         <td>${feature.properties.description}</td>
                     </tr>
                     </tbody>

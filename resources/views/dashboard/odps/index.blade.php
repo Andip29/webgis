@@ -28,8 +28,8 @@
                 <td>{{ $odp->name }}</td>
                 <td>{{ $odp->jumlah_user }}</td>
                 <td>{{ $odp->description }}</td>
-                <td>{{ $odp->latitude }}</td>
-                <td>{{ $odp->longitude }}</td>
+                <td>{{ $odp->lat }}</td>
+                <td>{{ $odp->long }}</td>
                 <td>
                     @if($odp->image)
                         <img src="{{ asset('uploads/odps/' . $odp->image) }}" width="100">

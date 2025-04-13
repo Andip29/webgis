@@ -3,21 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\odp;
-use App\Models\CalonPelanggan;
-class MapController extends Controller
+
+class CalonPelangganController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $odps = odp::all();
-        $calonPelanggans = CalonPelanggan::all();
-        return view('dashboard.maps.map', compact('odps','calonPelanggans'));
+        //
     }
-
-
 
     /**
      * Show the form for creating a new resource.

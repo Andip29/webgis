@@ -4,7 +4,7 @@ body { margin: 0; padding: 0; }
 }
 #map { position: absolute; top: 0; bottom: 0; width: 100%; }
 
-.marker {
+.marker-odp {
 background-image: url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png');
 background-size: cover;
 width: 50px;
@@ -12,6 +12,15 @@ height: 50px;
 border-radius: 50%;
 cursor: pointer;
 }
+
+.marker-calonPelanggan {
+    background-image: url('https://www.clipartmax.com/png/small/69-693648_map-marker-free-download-png-orange-map-marker-png.png" alt="Map Marker Free Download Png - Orange Map Marker Png @clipartmax.com');
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    }
 
 .mapboxgl-popup {
 max-width: 200px;
