@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\odp;
 class MapController extends Controller
 {
     /**
@@ -11,8 +11,11 @@ class MapController extends Controller
      */
     public function index()
     {
-        return view('dashboard.maps.map');
+        $odps = odp::all();
+        return view('dashboard.maps.map', compact('odps'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.

@@ -9,10 +9,42 @@ class OdpController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public $long, $lat;
+    // public $geoJson;
+
+    // private function loadOdps(){
+    //     $odps = odp::orderBy('created_at', 'desc')->get();
+    //     $odpLocation = [];
+
+    //     foreach($odps as $odp){
+    //         $odpLocation[] = [
+    //             'type' => 'Features',
+    //             'geometry' => [
+    //                 'coordinates' => [$odp->long, $odp->lat],
+    //                 'type' => 'Point'
+    //             ],
+    //             'properties' => [
+    //                 'locationId' => $odp->id,
+    //                 'title' => $odp->name,
+    //                 'user' => $odp->jumlah_user,
+    //                 'image' => $odp->image,
+    //                 'description' => $odp->descrition
+    //             ]
+    //         ];
+    //     }
+
+    //     $geolocation = [
+    //         "type" =>"FeatureCollection",
+    //         "features" => $odpLocation
+    //     ];
+
+    //     $geoJson = collect($geolocation)->toJson();
+    //     $this->geoJson = $geoJson;
+    // }
     public function index()
     {
-        $data = Odp::all();
-        return view('dashboard.odps.index', compact('data'));
+        $odps = Odp::all();
+        return view('dashboard.odps.index', compact('odps'));
     }
 
     /**

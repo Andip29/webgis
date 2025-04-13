@@ -31,4 +31,5 @@ Route::get('/dashboard', function () {
 
 route::get('map',[MapController::class,'index'])->middleware('auth');
 
+
 Route::resource('odps', OdpController::class)->middleware('auth');

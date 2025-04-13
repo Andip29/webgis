@@ -23,7 +23,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($data as $odp)
+            @foreach($odps as $odp)
             <tr>
                 <td>{{ $odp->name }}</td>
                 <td>{{ $odp->jumlah_user }}</td>

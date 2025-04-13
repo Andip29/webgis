@@ -10,5 +10,5 @@ class odp extends Model
     use HasFactory;
 
     protected $table = "odps";
-    protected $fillable = ['name', 'jumlah_user', 'description', 'latitude', 'longitude', 'image'];
+    protected $fillable = ['name', 'jumlah_user', 'description', 'lat', 'long', 'image'];
 }

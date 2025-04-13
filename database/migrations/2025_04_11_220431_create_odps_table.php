@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->integer('jumlah_user');
             $table->text('description')->nullable();
-            $table->decimal('latitude', 10, 7);
-            $table->decimal('longitude', 10, 7);
+            $table->decimal('lat', 10, 7);
+            $table->decimal('long', 10, 7);
             $table->string('image')->nullable();
             $table->timestamps();
         });
