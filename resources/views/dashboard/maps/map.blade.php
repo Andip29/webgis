@@ -75,7 +75,7 @@
     // add markers to map
     for (const feature of odpGeoJSON.features) {
         const el = document.createElement('div');
-        el.className = 'marker';
+        el.className = 'marker-odp';
 
   // make a marker for each feature and add to the map
     // new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map); 
@@ -130,7 +130,7 @@ const calonPelangganGeoJSON = {
     // add markers to map
     for (const feature of calonPelangganGeoJSON.features) {
         const el = document.createElement('div');
-        el.className = 'marker';
+        el.className = 'marker-calonPelanggan';
 
   // make a marker for each feature and add to the map
     // new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map); 
