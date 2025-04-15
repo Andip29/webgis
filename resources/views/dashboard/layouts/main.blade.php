@@ -5,20 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-    
     <link rel="stylesheet" href="assets/css/main/app.css">
     <link rel="stylesheet" href="assets/css/main/app-dark.css">
     <link rel="shortcut icon" href="assets/images/logo/favicon.svg" type="image/x-icon">
     <link rel="shortcut icon" href="assets/images/logo/favicon.png" type="image/png">
     <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans"
-      rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Open+Sans"
+    rel="stylesheet"
     />
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.11.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.11.0/mapbox-gl.js"></script>
-    <link rel="stylesheet" href="assets/css/map.css">
+    <link rel="stylesheet" href="assets/css/map.css?v={{ time() }}">
     <link rel="stylesheet" href="assets/css/shared/iconly.css">
-
 </head>
 
 <body>

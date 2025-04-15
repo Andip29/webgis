@@ -13,7 +13,7 @@ border-radius: 50%;
 cursor: pointer;
 }
 
-.marker-calonPelanggan {
+.marker-calonpelanggan {
     background-image: url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png');
     background-size: cover;
     width: 50px;

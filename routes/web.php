@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\CalonPelangganController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OdpController;
 
@@ -30,6 +31,5 @@ Route::get('/dashboard', function () {
 })->middleware('auth');
 
 route::get('map',[MapController::class,'index'])->middleware('auth');
-
-
+Route::resource('calonpelanggan', CalonPelangganController::class)->middleware('auth');
 Route::resource('odps', OdpController::class)->middleware('auth');
