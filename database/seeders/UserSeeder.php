@@ -13,11 +13,10 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-       User::create([
-        'name' => 'super admin',
-        'email' => 'superadmin@dwnet.id',
-        'password' => bcrypt('qwezxc123')
-       ]);
-        
+        User::updateOrCreate([
+            'name' => 'super admin',
+            'email' => 'superadmin@dwnet.id',
+            'password' => bcrypt('qwezxc123')
+        ]);
     }
 }

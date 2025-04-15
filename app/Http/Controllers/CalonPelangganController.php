@@ -37,9 +37,9 @@ class CalonPelangganController extends Controller
             'lat' => 'required',
             'long' => 'required',
         ]);
-    
+
         CalonPelanggan::create($request->all());
-    
+
         return redirect()->route('calonpelanggan.index')->with('success', 'Data berhasil ditambahkan.');
     }
 
@@ -54,8 +54,9 @@ class CalonPelangganController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CalonPelanggan $calonPelanggans)
+    public function edit($calonPelanggans)
     {
+        $calonPelanggans = CalonPelanggan::findOrFail($calonPelanggans);
         return view('calonpelanggan.edit', compact('calonPelanggans'));
     }
 
@@ -72,9 +73,9 @@ class CalonPelangganController extends Controller
             'lat' => 'required',
             'long' => 'required',
         ]);
-    
+
         $calonPelanggans->update($request->all());
-    
+
         return redirect()->route('calonpelanggan.index')->with('success', 'Data berhasil diperbarui.');
     }
 
