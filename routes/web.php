@@ -27,5 +27,5 @@ route::post('/login', [LoginController::class, 'authenticate'])->name('authentic
 route::post('/', [LoginController::class, 'logout'])->name('logout');
 
 route::get('/dashboard',[DashboardController::class,'index'])->middleware('auth');
-route::get('map',[MapController::class,'index'])->middleware('auth');
+route::get('map',[MapController::class,'index'])->name('map.index')->middleware('auth');
 Route::resource('calonpelanggan', CalonPelangganController::class)->middleware('auth');

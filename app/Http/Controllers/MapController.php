@@ -14,7 +14,7 @@ class MapController extends Controller
     {
         $odps = odp::all();
         $calonPelanggans = CalonPelanggan::all();
-        return view('dashboard.maps.map', compact('odps','calonPelanggans'));
+        return view('maps.index', compact('odps','calonPelanggans'));
     }
 
 

@@ -42,7 +42,7 @@
     <li class="sidebar-title">Extra UI</li>
     <li
         class="sidebar-item ">
-        <a href="{{ route('calonpelanggan.index') }}" class='sidebar-link'>
+        <a href="{{ route('map.index') }}" class='sidebar-link'>
             <i class="bi bi-stack"></i>
             <span>Map</span>
         </a>

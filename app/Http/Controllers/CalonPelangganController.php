@@ -38,9 +38,9 @@ class CalonPelangganController extends Controller
             'lat' => 'required',
             'long' => 'required',
         ]);
-    
+
         CalonPelanggan::create($request->all());
-    
+
         return redirect()->route('calonpelanggan.index')->with('success', 'Data berhasil ditambahkan.');
     }
 
@@ -77,7 +77,7 @@ class CalonPelangganController extends Controller
             'lat' => 'required',
             'long' => 'required',
         ]);
-        
+    
         $calonPelanggan->update($request->all());
     
         return redirect()->route('calonpelanggan.index')->with('success', 'Data berhasil diperbarui.');
