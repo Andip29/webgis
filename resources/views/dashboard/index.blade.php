@@ -1,269 +1,235 @@
-@extends('dashboard.layouts.main')
+@extends('layouts.main')
 @section('title', 'Dashboard')
 @section('container')
 <div class="page-heading">
     <h3>Profile Statistics</h3>
 </div>
-<div class="page-content">
-    <section class="row">
-        <div class="col-12 col-lg-9">
-            <div class="row">
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body px-4 py-4-5">
-                            <div class="row">
-                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-                                    <div class="stats-icon purple mb-2">
-                                        <i class="iconly-boldShow"></i>
-                                    </div>
-                                </div>
-                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                    <h6 class="text-muted font-semibold">Profile Views</h6>
-                                    <h6 class="font-extrabold mb-0">112.000</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body px-4 py-4-5">
-                            <div class="row">
-                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-                                    <div class="stats-icon blue mb-2">
-                                        <i class="iconly-boldProfile"></i>
-                                    </div>
-                                </div>
-                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                    <h6 class="text-muted font-semibold">Followers</h6>
-                                    <h6 class="font-extrabold mb-0">183.000</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body px-4 py-4-5">
-                            <div class="row">
-                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-                                    <div class="stats-icon green mb-2">
-                                        <i class="iconly-boldAdd-User"></i>
-                                    </div>
-                                </div>
-                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                    <h6 class="text-muted font-semibold">Following</h6>
-                                    <h6 class="font-extrabold mb-0">80.000</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body px-4 py-4-5">
-                            <div class="row">
-                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-                                    <div class="stats-icon red mb-2">
-                                        <i class="iconly-boldBookmark"></i>
-                                    </div>
-                                </div>
-                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                    <h6 class="text-muted font-semibold">Saved Post</h6>
-                                    <h6 class="font-extrabold mb-0">112</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Google Map</h3>
+                <p class="text-subtitle text-muted">Help users find your address</p>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Profile Visit</h4>
-                        </div>
-                        <div class="card-body">
-                            <div id="chart-profile-visit"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-xl-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Profile Visit</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center">
-                                        <svg class="bi text-primary" width="32" height="32" fill="blue"
-                                            style="width:10px">
-                                            <use
-                                                xlink:href="assets/images/bootstrap-icons.svg#circle-fill" />
-                                        </svg>
-                                        <h5 class="mb-0 ms-3">Europe</h5>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <h5 class="mb-0">862</h5>
-                                </div>
-                                <div class="col-12">
-                                    <div id="chart-europe"></div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center">
-                                        <svg class="bi text-success" width="32" height="32" fill="blue"
-                                            style="width:10px">
-                                            <use
-                                                xlink:href="assets/images/bootstrap-icons.svg#circle-fill" />
-                                        </svg>
-                                        <h5 class="mb-0 ms-3">America</h5>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <h5 class="mb-0">375</h5>
-                                </div>
-                                <div class="col-12">
-                                    <div id="chart-america"></div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center">
-                                        <svg class="bi text-danger" width="32" height="32" fill="blue"
-                                            style="width:10px">
-                                            <use
-                                                xlink:href="assets/images/bootstrap-icons.svg#circle-fill" />
-                                        </svg>
-                                        <h5 class="mb-0 ms-3">Indonesia</h5>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <h5 class="mb-0">1025</h5>
-                                </div>
-                                <div class="col-12">
-                                    <div id="chart-indonesia"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-xl-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Latest Comments</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-lg">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Comment</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="col-3">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="avatar avatar-md">
-                                                        <img src="assets/images/faces/5.jpg">
-                                                    </div>
-                                                    <p class="font-bold ms-3 mb-0">Si Cantik</p>
-                                                </div>
-                                            </td>
-                                            <td class="col-auto">
-                                                <p class=" mb-0">Congratulations on your graduation!</p>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-3">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="avatar avatar-md">
-                                                        <img src="assets/images/faces/2.jpg">
-                                                    </div>
-                                                    <p class="font-bold ms-3 mb-0">Si Ganteng</p>
-                                                </div>
-                                            </td>
-                                            <td class="col-auto">
-                                                <p class=" mb-0">Wow amazing design! Can you make another tutorial for
-                                                    this design?</p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Google Map</li>
+                    </ol>
+                </nav>
             </div>
         </div>
-        <div class="col-12 col-lg-3">
-            <div class="card">
-                <div class="card-body py-4 px-4">
-                    <div class="d-flex align-items-center">
-                        <div class="avatar avatar-xl">
-                            <img src="assets/images/faces/1.jpg" alt="Face 1">
-                        </div>
-                        <div class="ms-3 name">
-                            <h5 class="font-bold">John Duck</h5>
-                            <h6 class="text-muted mb-0">@johnducky</h6>
+    </div>
+    <section class="section">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Our Location</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="maps">
+                            <div id="map"></div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <h4>Recent Messages</h4>
-                </div>
-                <div class="card-content pb-4">
-                    <div class="recent-message d-flex px-4 py-3">
-                        <div class="avatar avatar-lg">
-                            <img src="assets/images/faces/4.jpg">
-                        </div>
-                        <div class="name ms-4">
-                            <h5 class="mb-1">Hank Schrader</h5>
-                            <h6 class="text-muted mb-0">@johnducky</h6>
-                        </div>
-                    </div>
-                    <div class="recent-message d-flex px-4 py-3">
-                        <div class="avatar avatar-lg">
-                            <img src="assets/images/faces/5.jpg">
-                        </div>
-                        <div class="name ms-4">
-                            <h5 class="mb-1">Dean Winchester</h5>
-                            <h6 class="text-muted mb-0">@imdean</h6>
-                        </div>
-                    </div>
-                    <div class="recent-message d-flex px-4 py-3">
-                        <div class="avatar avatar-lg">
-                            <img src="assets/images/faces/1.jpg">
-                        </div>
-                        <div class="name ms-4">
-                            <h5 class="mb-1">John Dodol</h5>
-                            <h6 class="text-muted mb-0">@dodoljohn</h6>
-                        </div>
-                    </div>
-                    <div class="px-4">
-                        <button class='btn btn-block btn-xl btn-outline-primary font-bold mt-3'>Start Conversation</button>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <h4>Visitors Profile</h4>
-                </div>
-                <div class="card-body">
-                    <div id="chart-visitors-profile"></div>
                 </div>
             </div>
         </div>
     </section>
 </div>
+@endsection
+@section('maps')
+<script>
+	// TO MAKE THE MAP APPEAR YOU MUST
+	// ADD YOUR ACCESS TOKEN FROM
+	// https://account.mapbox.com
+	mapboxgl.accessToken = '{{env("MAPBOX_KEY")}}';
+
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
+        zoom: 15,
+        center: [107.840366, -6.989709]
+    });
+
+    
+    const odpGeoJSON = {
+        type: 'FeatureCollection',
+        features: [
+            @foreach ($odps as $odp)
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [{{ $odp->long }}, {{ $odp->lat }}]
+                    },
+                    properties: {
+                        title: "{{ $odp->name }}",
+                        description: "{{ $odp->description }}",
+                        image: "{{ asset('storage/' . $odp->image) }}"
+                    }
+                },
+            @endforeach
+        ]
+    };
+
+    // add markers to map
+    for (const feature of odpGeoJSON.features) {
+        const el = document.createElement('div');
+        el.className = 'marker-odp';
+
+  // make a marker for each feature and add to the map
+    // new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map); 
+    new mapboxgl.Marker(el)
+        .setLngLat(feature.geometry.coordinates)
+        .setPopup(
+        new mapboxgl.Popup({ offset: 25 }) // add popups
+            .setHTML(
+            `
+            <div style="overflow-y, auto; max-height: 400px, width:100%, ">
+                <table class="table table-borderless text-body">
+                    <tbody>
+                    <tr>
+                        <td>${feature.properties.title}</td>
+                    </tr>
+                    <tr>
+                        <td>image</td>
+                        <td><img src="${feature.properties.image}" loading="lazy" class="img-fluid"></td>
+                    </tr>
+                    <tr>
+                        <td>jumlah</td>
+                        <td>${feature.properties.description}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>`
+        )
+    )
+  .addTo(map);
+}
+
+const calonPelangganGeoJSON = {
+        type: 'FeatureCollection',
+        features: [
+            @foreach ($calonPelanggans as $calonPelanggan)
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [{{ $calonPelanggan->long }}, {{ $calonPelanggan->lat }}]
+                    },
+                    properties: {
+                        title: "{{ $calonPelanggan->name }}",
+                        description: "{{ $calonPelanggan->description }}",
+                        image: "{{ asset('storage/' . $calonPelanggan->image) }}"
+                    }
+                },
+            @endforeach
+        ]
+    };
+
+    // add markers to map
+    for (const feature of calonPelangganGeoJSON.features) {
+        const el = document.createElement('div');
+        el.className = 'marker-calonpelanggan';
+
+  // make a marker for each feature and add to the map
+    // new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map); 
+    new mapboxgl.Marker(el)
+        .setLngLat(feature.geometry.coordinates)
+        .setPopup(
+        new mapboxgl.Popup({ offset: 25 }) // add popups
+            .setHTML(
+            `
+            <div style="overflow-y, auto; max-height: 400px, width:100%, ">
+                <table class="table table-borderless text-body">
+                    <tbody>
+                    <tr>
+                        <td>${feature.properties.title}</td>
+                    </tr>
+                    <tr>
+                        <td>image</td>
+                        <td><img src="${feature.properties.image}" loading="lazy" class="img-fluid"></td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>${feature.properties.description}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>`
+        )
+    )
+  .addTo(map);
+}
+    
+    map.on('click', function (e) {
+            const lat = e.lngLat.lat;
+            const lng = e.lngLat.lng;
+
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+
+            // Tambah marker
+            if (marker) marker.remove(); // hapus marker sebelumnya
+            marker = new mapboxgl.Marker()
+                .setLngLat([lng, lat])
+                .addTo(map);
+        });
+
+    map.addControl(new mapboxgl.NavigationControl());
+    map.scrollZoom.enable();
+
+    map.on('style.load', () => {
+        map.setFog({}); // Set the default atmosphere style
+    });
+
+    // The following values can be changed to control rotation speed:
+
+    // At low zooms, complete a revolution every two minutes.
+    const secondsPerRevolution = 240;
+    // Above zoom level 5, do not rotate.
+    const maxSpinZoom = 5;
+    // Rotate at intermediate speeds between zoom levels 3 and 5.
+    const slowSpinZoom = 3;
+
+    let userInteracting = false;
+    const spinEnabled = true;
+
+    function spinGlobe() {
+        const zoom = map.getZoom();
+        if (spinEnabled && !userInteracting && zoom < maxSpinZoom) {
+            let distancePerSecond = 360 / secondsPerRevolution;
+            if (zoom > slowSpinZoom) {
+                // Slow spinning at higher zooms
+                const zoomDif =
+                    (maxSpinZoom - zoom) / (maxSpinZoom - slowSpinZoom);
+                distancePerSecond *= zoomDif;
+            }
+            const center = map.getCenter();
+            center.lng -= distancePerSecond;
+            // Smoothly animate the map over one second.
+            // When this animation is complete, it calls a 'moveend' event.
+            map.easeTo({ center, duration: 1000, easing: (n) => n });
+        }
+    }
+
+    // Pause spinning on interaction
+    map.on('mousedown', () => {
+        userInteracting = true;
+    });
+    map.on('dragstart', () => {
+        userInteracting = true;
+    });
+
+    // When animation is complete, start spinning if there is no ongoing interaction
+    map.on('moveend', () => {
+        spinGlobe();
+    });
+
+    spinGlobe();
+</script>
 
 @endsection

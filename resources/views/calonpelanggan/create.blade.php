@@ -1,13 +1,24 @@
-@extends('dashboard.layouts.main')
+@extends('layouts.main')
 @section('title', 'Dashboard')
 @section('container')
 <div class="container">
     <h3>Tambah Calon Pelanggan</h3>
     <div class="row">
-        <div class="col-md-8">
-            <div id="map" style="height: 70vh;"></div>
-        </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Our Location</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="maps">
+                            <div id="map"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
             <form action="{{ route('calonpelanggan.store') }}" method="POST">
                 @csrf
                 <div class="mb-3">
@@ -36,13 +47,13 @@
                 </div>
                 <button class="btn btn-primary">Simpan</button>
             </form>
+             </div>
+            </div>
         </div>
     </div>
 </div>
-
-{{-- Mapbox --}}
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+@endsection
+@section('maps')
 <script>
     mapboxgl.accessToken = '{{ env("MAPBOX_KEY") }}';
     const map = new mapboxgl.Map({
@@ -52,17 +63,37 @@
         zoom: 13
     });
 
-    let marker;
+    let calonMarker = null;
 
-    map.on('click', function (e) {
-        const lat = e.lngLat.lat;
-        const lng = e.lngLat.lng;
+    map.on('click', (e) => {
+        const { lng, lat } = e.lngLat;
 
-        document.getElementById('lat').value = lat;
-        document.getElementById('long').value = lng;
+        // Hapus marker sebelumnya
+        if (calonMarker) {
+            calonMarker.remove();
+        }
 
-        if (marker) marker.remove();
-        marker = new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
+        // Buat marker baru
+        const el = document.createElement('div');
+        el.className = 'marker-calonpelanggan';
+
+        calonMarker = new mapboxgl.Marker(el)
+            .setLngLat([lng, lat])
+            .setPopup(
+                new mapboxgl.Popup({ offset: 25 }).setHTML(`
+                    <div><strong>Calon Pelanggan</strong><br>Lokasi: ${lat.toFixed(5)}, ${lng.toFixed(5)}</div>
+                `)
+            )
+            .addTo(map)
+            .togglePopup();
+
+        // Isi input form
+        const inputLat = document.getElementById('lat');
+        const inputLong = document.getElementById('long');
+        if (inputLat && inputLong) {
+            inputLat.value = lat;
+            inputLong.value = lng;
+        }
     });
 </script>
 @endsection

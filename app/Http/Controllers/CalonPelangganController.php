@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CalonPelanggan;
+use App\Models\odp;
 
 class CalonPelangganController extends Controller
 {
@@ -46,24 +47,28 @@ class CalonPelangganController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CalonPelanggan $calonPelanggans)
+    public function show($calonPelanggan)
     {
-        return view('calonpelanggan.show', compact('calonPelanggans'));
+        $odps = odp::all();
+        $calonPelanggan = CalonPelanggan::findOrFail($calonPelanggan);
+        return view('calonpelanggan.show', compact('calonPelanggan','odps'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CalonPelanggan $calonPelanggans)
+    public function edit($calonPelanggan)
     {
-        return view('calonpelanggan.edit', compact('calonPelanggans'));
+        $calonPelanggan = CalonPelanggan::findOrFail($calonPelanggan);
+        return view('calonpelanggan.edit', compact('calonPelanggan'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storage.s
      */
-    public function update(Request $request, CalonPelanggan $calonPelanggans)
+    public function update(Request $request, $calonPelanggan)
     {
+        $calonPelanggan = CalonPelanggan::findOrFail($calonPelanggan);
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
@@ -72,8 +77,8 @@ class CalonPelangganController extends Controller
             'lat' => 'required',
             'long' => 'required',
         ]);
-    
-        $calonPelanggans->update($request->all());
+        
+        $calonPelanggan->update($request->all());
     
         return redirect()->route('calonpelanggan.index')->with('success', 'Data berhasil diperbarui.');
     }
@@ -81,9 +86,10 @@ class CalonPelangganController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CalonPelanggan $calonPelanggans)
+    public function destroy($calonPelanggan)
     {
-        $calonPelanggans->delete();
+        $calonPelanggan = CalonPelanggan::findOrFail($calonPelanggan);
+        $calonPelanggan->delete();
         return redirect()->route('calonpelanggan.index')->with('success', 'Data berhasil dihapus.');
     }
 }

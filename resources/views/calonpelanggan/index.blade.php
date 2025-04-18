@@ -1,4 +1,4 @@
-@extends('dashboard.layouts.main')
+@extends('layouts.main')
 @section('title', 'Dashboard')
 @section('container')
 <div class="container">
@@ -16,6 +16,7 @@
             </tr>
         </thead>
         <tbody>
+            
             @foreach($calonPelanggans as $data)
             <tr>
                 <td>{{ $data->name }}</td>

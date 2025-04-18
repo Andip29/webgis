@@ -26,10 +26,6 @@ route::get('/', [LoginController::class, 'index'])->name('login')->middleware('g
 route::post('/login', [LoginController::class, 'authenticate'])->name('authenticate');
 route::post('/', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', function () {
-    return view('dashboard/index');
-})->middleware('auth');
-
+route::get('/dashboard',[DashboardController::class,'index'])->middleware('auth');
 route::get('map',[MapController::class,'index'])->middleware('auth');
 Route::resource('calonpelanggan', CalonPelangganController::class)->middleware('auth');
-Route::resource('odps', OdpController::class)->middleware('auth');

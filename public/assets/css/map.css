@@ -1,24 +1,26 @@
 body { margin: 0; padding: 0; }
 .card-body .maps{
-    height: 70vh;
+    height: 55vh;
 }
 #map { position: absolute; top: 0; bottom: 0; width: 100%; }
 
 .marker-odp {
-background-image: url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png');
-background-size: cover;
+background-image: url("https://res.cloudinary.com/ddafozvoe/image/upload/v1744872939/erasebg-transformed_awfowk.png");
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
 width: 50px;
 height: 50px;
-border-radius: 50%;
 cursor: pointer;
 }
 
 .marker-calonpelanggan {
-    background-image: url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png');
-    background-size: cover;
+    background-image: url("https://res.cloudinary.com/ddafozvoe/image/upload/v1744872940/calonpelanggan-marker_lrvlpg.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     width: 50px;
     height: 50px;
-    border-radius: 50%;
     cursor: pointer;
     }
 
