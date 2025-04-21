@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Dashboard')
+@section('title', 'Detail')
 @section('container')
 <div class="container">
     <h3>Detail Calon Pelanggan</h3>
@@ -116,7 +116,7 @@
                     properties: {
                         title: "{{ $odp->name }}",
                         description: "{{ $odp->description }}",
-                        image: "{{ asset('storage/' . $odp->image) }}"
+                        jumlah_user: {{$odp->jumlah_user}}
                     }
                 },
             @endforeach
@@ -175,11 +175,11 @@
                                     <td colspan="2"><strong>${feature.properties.title}</strong></td>
                                 </tr>
                                 <tr>
-                                    <td>Gambar</td>
-                                    <td><img src="${feature.properties.image}" loading="lazy" class="img-fluid"></td>
+                                    <td>kapasitas</td>
+                                    <td>${feature.properties.jumlah_user}</td>
                                 </tr>
                                 <tr>
-                                    <td>Jumlah</td>
+                                    <td>deskripsi</td>
                                     <td>${feature.properties.description}</td>
                                 </tr>
                             </tbody>

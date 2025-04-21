@@ -5,14 +5,13 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Google Map</h3>
-                    <p class="text-subtitle text-muted">Help users find your address</p>
+                    <h3>Map</h3>
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Google Map</li>
+                            <li class="breadcrumb-item active" aria-current="page">Map</li>
                         </ol>
                     </nav>
                 </div>
@@ -20,11 +19,33 @@
         </div>
         <section class="section">
             <div class="row">
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Import Data ODP (CSV)</h5>
+                        <form action="{{ route('map.import') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="file" class="form-label">Pilih File CSV</label>
+                                <input type="file" class="form-control" name="file" accept=".csv" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Import</button>
+                        </form>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title">Our Location</h5>
-                        </div>
                         <div class="card-body">
                             <div class="maps">
                                 <div id="map"></div>
@@ -65,7 +86,7 @@
                     properties: {
                         title: "{{ $odp->name }}",
                         description: "{{ $odp->description }}",
-                        image: "{{ asset('storage/' . $odp->image) }}"
+                        jumlah_user: {{ $odp->jumlah_user }}
                     }
                 },
             @endforeach
@@ -92,11 +113,11 @@
                         <td>${feature.properties.title}</td>
                     </tr>
                     <tr>
-                        <td>image</td>
-                        <td><img src="${feature.properties.image}" loading="lazy" class="img-fluid"></td>
+                        <td>kapasitas</td>
+                        <td>${feature.properties.jumlah_user}</td>
                     </tr>
                     <tr>
-                        <td>jumlah</td>
+                        <td>deskripsi</td>
                         <td>${feature.properties.description}</td>
                     </tr>
                     </tbody>

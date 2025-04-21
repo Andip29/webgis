@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\odp;
 use App\Models\CalonPelanggan;
+use Illuminate\Support\Facades\Storage;
 class MapController extends Controller
 {
     /**
@@ -16,6 +17,37 @@ class MapController extends Controller
         $calonPelanggans = CalonPelanggan::all();
         return view('maps.index', compact('odps','calonPelanggans'));
     }
+
+    public function import(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:csv,txt'
+    ]);
+
+    $file = $request->file('file');
+
+    if (($handle = fopen($file, "r")) !== false) {
+        $isHeader = true;
+        while (($data = fgetcsv($handle, 1000, ",")) !== false) {
+            if ($isHeader) {
+                $isHeader = false;
+                continue;
+            }
+
+            // Sesuaikan urutan kolom CSV dengan kolom di database
+            odp::create([
+                'name' => $data[0],
+                'lat' => $data[1],
+                'long' => $data[2],
+                'description' => $data[3],
+                'jumlah_user' => $data[4],
+            ]);
+        }
+        fclose($handle);
+    }
+
+    return redirect()->route('map.index')->with('success', 'Data berhasil diimpor!');
+}
 
 
 

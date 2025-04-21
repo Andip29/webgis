@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Dashboard')
+@section('title', 'Tambah Calon Pelanggan')
 @section('container')
 <div class="container">
     <h3>Tambah Calon Pelanggan</h3>
