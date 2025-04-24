@@ -16,27 +16,24 @@ class OdpSeeder extends Seeder
         $odps = [
             [
                 'name' => 'ODP A',
-                'jumlah_user' => 10,
-                'description' => 'ODP utama wilayah A',
+                'stok' => 10,
+                'port' => '8',
                 'lat' => -6.9874731,
                 'long' => 107.8404948,
-                'image' => null,
             ],
             [
                 'name' => 'ODP B',
-                'jumlah_user' => 15,
-                'description' => 'ODP cadangan wilayah B',
-                'lat' => -6.989220,
-                'long' => 107.841031,
-                'image' => null,
+                'stok' => 8,
+                'port' => '10',
+                'lat' => -6.9874731,
+                'long' => 107.8404948,
             ],
             [
                 'name' => 'ODP C',
-                'jumlah_user' => 8,
-                'description' => 'ODP daerah padat C',
+                'stok' => 8,
+                'port' => '10',
                 'lat' => -6.985024,
                 'long' => 107.839293,
-                'image' => null,
             ],
         ];
 

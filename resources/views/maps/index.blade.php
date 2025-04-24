@@ -85,8 +85,8 @@
                     },
                     properties: {
                         title: "{{ $odp->name }}",
-                        description: "{{ $odp->description }}",
-                        jumlah_user: {{ $odp->jumlah_user }}
+                        port: "{{ $odp->port }}",
+                        stok: {{ $odp->stok }}
                     }
                 },
             @endforeach
@@ -113,12 +113,12 @@
                         <td>${feature.properties.title}</td>
                     </tr>
                     <tr>
-                        <td>kapasitas</td>
-                        <td>${feature.properties.jumlah_user}</td>
+                        <td>port</td>
+                        <td>${feature.properties.port}</td>
                     </tr>
                     <tr>
-                        <td>deskripsi</td>
-                        <td>${feature.properties.description}</td>
+                        <td>stok</td>
+                        <td>${feature.properties.stok}</td>
                     </tr>
                     </tbody>
                 </table>
