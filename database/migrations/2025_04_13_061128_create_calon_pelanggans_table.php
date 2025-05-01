@@ -17,10 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('no_telp');
             $table->text('alamat');
-            $table->decimal('lat', 10, 8);
-            $table->decimal('long', 11, 8);
+            $table->double('lat', 15, 8);
+            $table->double('long', 15, 8);
             $table->timestamps();
-            
         });
     }
 

@@ -2,6 +2,7 @@
 @section('title', 'Detail')
 @section('container')
 <div class="container">
+
     <h3>Detail Calon Pelanggan</h3>
 
     <table class="table table-bordered mt-3">
@@ -142,27 +143,48 @@
     let minDistance = Infinity;
 
     for (const feature of odpGeoJSON.features) {
-        const [lon, lat] = feature.geometry.coordinates;
-        const distance = getDistance(calonLat, calonLong, lat, lon);
+    const [lon, lat] = feature.geometry.coordinates;
+    const stok = parseInt(feature.properties.stok);
+    const distance = getDistance(calonLat, calonLong, lat, lon);
+    feature.properties.jarak = distance.toFixed(2); // Simpan ke properties
 
-        if (distance < minDistance) {
-            minDistance = distance;
-            nearestODP = feature;
-        }
+    if (stok > 0 && distance < minDistance) {
+        minDistance = distance;
+        nearestODP = feature;
     }
+}
 
-    // add markers ODP
-    for (const feature of odpGeoJSON.features) {
+
+// add markers to map
+for (const feature of odpGeoJSON.features) {
         const el = document.createElement('div');
         el.className = 'marker-odp';
+}
 
-     // Tandai ODP terdekat (misalnya ubah warna)
-     if (feature === nearestODP) {
-            el.style.backgroundColor = 'red';
-            el.style.width = '30px';
-            el.style.height = '30px';
-            el.style.borderRadius = '50%';
-        }
+// Tambahkan marker untuk setiap ODP
+for (const feature of odpGeoJSON.features) {
+    const [lon, lat] = feature.geometry.coordinates;
+    const stok = parseInt(feature.properties.stok);
+    const port = parseInt(feature.properties.port);
+    const isPenuh = stok === 0;
+
+    const el = document.createElement('div');
+
+    if (isPenuh) {
+        el.className = 'marker-odp';
+        el.style.backgroundColor = 'red'; // ODP penuh
+        el.style.width = '25px';
+        el.style.height = '25px';
+        el.style.borderRadius = '50%';
+    } else if (feature === nearestODP) {
+        el.className = 'marker-odp';
+        el.style.backgroundColor = 'blue'; // ODP terdekat
+        el.style.width = '30px';
+        el.style.height = '30px';
+        el.style.borderRadius = '50%';
+    } else {
+        el.className = 'marker-odp'; // default dari CSS
+    }
 
    new mapboxgl.Marker(el)
             .setLngLat(feature.geometry.coordinates)

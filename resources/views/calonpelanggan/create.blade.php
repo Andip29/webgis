@@ -2,13 +2,11 @@
 @section('title', 'Tambah Calon Pelanggan')
 @section('container')
 <div class="container">
+    <a href="{{ route('calonpelanggan.index') }}" class="btn btn-secondary mb-3">← Kembali</a>
     <h3>Tambah Calon Pelanggan</h3>
     <div class="row">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">Our Location</h5>
-                    </div>
                     <div class="card-body">
                         <div class="maps">
                             <div id="map"></div>

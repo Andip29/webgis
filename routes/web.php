@@ -5,7 +5,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\CalonPelangganController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\OdpController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +25,7 @@ route::get('/', [LoginController::class, 'index'])->name('login')->middleware('g
 route::post('/login', [LoginController::class, 'authenticate'])->name('authenticate');
 route::post('/', [LoginController::class, 'logout'])->name('logout');
 
-route::get('/dashboard',[DashboardController::class,'index'])->middleware('auth');
-route::get('map',[MapController::class,'index'])->name('map.index')->middleware('auth');
+route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+route::get('map', [MapController::class, 'index'])->name('map.index')->middleware('auth');
 Route::post('/map/import', [MapController::class, 'import'])->name('map.import')->middleware('auth');
 Route::resource('calonpelanggan', CalonPelangganController::class)->middleware('auth');

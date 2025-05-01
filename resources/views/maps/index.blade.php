@@ -4,46 +4,89 @@
     <div class="page-heading">
         <div class="page-title">
             <div class="row">
-                <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Map</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        @if($message = Session::get('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{ $message }}
+                        </div>
+                    @elseif($message =  Session::get('error'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ $message }}
+                        </div>
+                    @endif
+        
+                        <div class="card">
+                            <div class="card-header">
+                                DATA USERS
+                            </div>
+                            <div class="card-body">
+                                <div class="button-action" style="margin-bottom: 20px">
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#import">
+                                        IMPORT
+                                    </button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">NAMA ODP</th>
+                                            <th scope="col">STOK</th>
+                                            <th scope="col">PORT</th>
+                                            <th scope="col">LATITUDE</th>
+                                            <th scope="col">LONGITUDE</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($odps as $odp)
+                                            <tr>
+                                                <td>{{ $odp->name }}</td>
+                                                <td>{{ $odp->stok }}</td>
+                                                <td>{{ $odp->port }}</td>
+                                                <td>{{ $odp->lat }}</td>
+                                                <td>{{ $odp->long }}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 order-md-2 order-first">
-                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Map</li>
-                        </ol>
-                    </nav>
+            </div>
+            
+            <!-- modal -->
+            <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">IMPORT DATA</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="{{ route('map.import') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>PILIH FILE</label>
+                                    <input type="file" name="file" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">TUTUP</button>
+                                <button type="submit" class="btn btn-success">IMPORT</button>
+                            </div>
+                        </form>
+                        
+                    </div>
                 </div>
             </div>
         </div>
         <section class="section">
             <div class="row">
-                @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
 
-                @if(session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif
-
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Import Data ODP (CSV)</h5>
-                        <form action="{{ route('map.import') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="mb-3">
-                                <label for="file" class="form-label">Pilih File CSV</label>
-                                <input type="file" class="form-control" name="file" accept=".csv" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Import</button>
-                        </form>
-                    </div>
-                </div>
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">

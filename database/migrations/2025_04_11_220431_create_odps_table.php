@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('stok');
-            $table->string('port');
-            $table->decimal('lat', 10, 7);
-            $table->decimal('long', 10, 7);
+            $table->integer('port');
+            $table->double('lat', 15, 8);
+            $table->double('long', 15, 8);
             $table->timestamps();
         });
     }

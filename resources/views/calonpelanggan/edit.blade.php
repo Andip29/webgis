@@ -2,6 +2,7 @@
 @section('title', 'Edit Calon Pelanggan')
 @section('container')
 <div class="container">
+    <a href="{{ route('calonpelanggan.index') }}" class="btn btn-secondary mb-3">← Kembali</a>
     <h3>Edit Calon Pelanggan</h3>
     <div class="row">
         <div class="col-md-8">

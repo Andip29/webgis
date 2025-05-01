@@ -1,8 +1,8 @@
 body { margin: 0; padding: 0; }
 .card-body .maps{
-    height: 55vh;
+    height: 65vh;
 }
-#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+#map { height: 100%; width: 100%; border-radius: 10px; }
 
 .marker-odp {
 background-image: url("https://res.cloudinary.com/ddafozvoe/image/upload/v1744872939/erasebg-transformed_awfowk.png");
