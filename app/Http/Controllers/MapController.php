@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\OdpsImport;
 use Illuminate\Http\Request;
-use App\Models\odp;
+use App\Models\Odp;
 use App\Models\CalonPelanggan;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -16,7 +16,7 @@ class MapController extends Controller
      */
     public function index()
     {
-        $odps = odp::all();
+        $odps = Odp::all();
         $calonPelanggans = CalonPelanggan::all();
         return view('maps.index', compact('odps', 'calonPelanggans'));
     }

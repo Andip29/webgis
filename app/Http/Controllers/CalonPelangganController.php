@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CalonPelanggan;
-use App\Models\odp;
+use App\Models\Odp;
 
 class CalonPelangganController extends Controller
 {
@@ -49,9 +49,9 @@ class CalonPelangganController extends Controller
      */
     public function show($calonPelanggan)
     {
-        $odps = odp::all();
+        $odps = Odp::all();
         $calonPelanggan = CalonPelanggan::findOrFail($calonPelanggan);
-        return view('calonpelanggan.show', compact('calonPelanggan','odps'));
+        return view('calonpelanggan.show', compact('calonPelanggan', 'odps'));
     }
 
     /**
@@ -77,9 +77,9 @@ class CalonPelangganController extends Controller
             'lat' => 'required',
             'long' => 'required',
         ]);
-    
+
         $calonPelanggan->update($request->all());
-    
+
         return redirect()->route('calonpelanggan.index')->with('success', 'Data berhasil diperbarui.');
     }
 

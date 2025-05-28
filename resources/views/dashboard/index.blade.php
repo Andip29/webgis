@@ -36,9 +36,7 @@
 @endsection
 @section('maps')
 <script>
-	// TO MAKE THE MAP APPEAR YOU MUST
-	// ADD YOUR ACCESS TOKEN FROM
-	// https://account.mapbox.com
+	
 	mapboxgl.accessToken = '{{env("MAPBOX_KEY")}}';
 
     const map = new mapboxgl.Map({
@@ -72,12 +70,10 @@
 
     // add markers to map
     for (const feature of odpGeoJSON.features) {
-        const el = document.createElement('div');
-        el.className = 'marker-odp';
+        new mapboxgl.Marker({
+        color: feature.properties.stok === 0 ? 'red' : 'blue'
+    })
 
-  // make a marker for each feature and add to the map
-    // new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map); 
-    new mapboxgl.Marker(el)
         .setLngLat(feature.geometry.coordinates)
         .setPopup(
         new mapboxgl.Popup({ offset: 25 }) // add popups
@@ -87,15 +83,15 @@
                 <table class="table table-borderless text-body">
                     <tbody>
                     <tr>
-                        <td>${feature.properties.title}</td>
-                    </tr>
-                    <tr>
-                        <td>stok</td>
-                        <td>${feature.properties.stok}</td>
+                         <td colspan="2"><strong>${feature.properties.title}</strong></td>
                     </tr>
                     <tr>
                         <td>port</td>
                         <td>${feature.properties.port}</td>
+                    </tr>
+                    <tr>
+                        <td>stok</td>
+                        <td>${feature.properties.stok}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -116,9 +112,9 @@ const calonPelangganGeoJSON = {
                         coordinates: [{{ $calonPelanggan->long }}, {{ $calonPelanggan->lat }}]
                     },
                     properties: {
-                        title: "{{ $calonPelanggan->name }}",
-                        description: "{{ $calonPelanggan->description }}",
-                        image: "{{ asset('storage/' . $calonPelanggan->image) }}"
+                        name: "{{ $calonPelanggan->name }}",
+                        alamat: "{{ $calonPelanggan->alamat }}",
+                        no_telp: "{{ $calonPelanggan->no_telp}}"
                     }
                 },
             @endforeach
@@ -127,12 +123,9 @@ const calonPelangganGeoJSON = {
 
     // add markers to map
     for (const feature of calonPelangganGeoJSON.features) {
-        const el = document.createElement('div');
-        el.className = 'marker-calonpelanggan';
-
-  // make a marker for each feature and add to the map
-    // new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map); 
-    new mapboxgl.Marker(el)
+        new mapboxgl.Marker({
+        color: 'yellow'
+    })
         .setLngLat(feature.geometry.coordinates)
         .setPopup(
         new mapboxgl.Popup({ offset: 25 }) // add popups
@@ -142,15 +135,15 @@ const calonPelangganGeoJSON = {
                 <table class="table table-borderless text-body">
                     <tbody>
                     <tr>
-                        <td>${feature.properties.title}</td>
+                         <td colspan="2"><strong>${feature.properties.name}</strong></td>
                     </tr>
                     <tr>
-                        <td>image</td>
-                        <td><img src="${feature.properties.image}" loading="lazy" class="img-fluid"></td>
+                        <td>Alamat</td>
+                        <td>${feature.properties.alamat}</td>
                     </tr>
                     <tr>
-                        <td>description</td>
-                        <td>${feature.properties.description}</td>
+                        <td>No.Telp</td>
+                        <td>${feature.properties.no_telp}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -159,20 +152,7 @@ const calonPelangganGeoJSON = {
     )
   .addTo(map);
 }
-    
-    map.on('click', function (e) {
-            const lat = e.lngLat.lat;
-            const lng = e.lngLat.lng;
 
-            document.getElementById('latitude').value = lat;
-            document.getElementById('longitude').value = lng;
-
-            // Tambah marker
-            if (marker) marker.remove(); // hapus marker sebelumnya
-            marker = new mapboxgl.Marker()
-                .setLngLat([lng, lat])
-                .addTo(map);
-        });
 
     map.addControl(new mapboxgl.NavigationControl());
     map.scrollZoom.enable();

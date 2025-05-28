@@ -32,6 +32,7 @@
         </tr>
     </table>
 
+
     <div class="col-md-10">
         <div class="card">
             <div class="card-header">
@@ -44,211 +45,213 @@
             </div>
         </div>
     </div>
+
+    <div id="odp-list-container" class="mt-4">
+    <h3>Pilih ODP Terdekat:</h3>
+    <div id="odp-list" class="btn-group-vertical" role="group" aria-label="Daftar ODP"></div>
+</div>
+</div>
 </div>
 @endsection
 @section('maps')
 <script>
    mapboxgl.accessToken = '{{ env("MAPBOX_KEY") }}';
-    const calonLat = {{ $calonPelanggan->lat }};
-    const calonLong = {{ $calonPelanggan->long }};
+const calonLat = {{ $calonPelanggan->lat }};
+const calonLong = {{ $calonPelanggan->long }};
 
-    const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        projection: 'globe',
-        center: [calonLong, calonLat],
-        zoom: 13
-    });
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [calonLong, calonLat],
+    zoom: 15
+});
 
-    // GeoJSON Calon Pelanggan
-    const calonPelangganGeoJSON = {
-        type: 'Feature',
-        geometry: {
-            type: 'Point',
-            coordinates: [calonLong, calonLat]
+// Marker Calon Pelanggan
+new mapboxgl.Marker({ color: 'yellow' }) // 
+    .setLngLat([calonLong, calonLat])
+    .setPopup(
+        new mapboxgl.Popup({ offset: 25 }).setHTML(`
+            <strong>{{ $calonPelanggan->name }}</strong><br>
+            {{ $calonPelanggan->alamat }}
+        `)
+    )
+    .addTo(map);
+
+// Data ODP
+const odpGeoJSON = {
+    type: 'FeatureCollection',
+    features: [
+        @foreach ($odps as $odp)
+        {
+            type: 'Feature',
+            geometry: {
+                type: 'Point',
+                coordinates: [{{ $odp->long }}, {{ $odp->lat }}]
+            },
+            properties: {
+                title: "{{ $odp->name }}",
+                port: "{{ $odp->port }}",
+                stok: {{ $odp->stok }}
+            }
         },
-        properties: {
-            title: "{{ $calonPelanggan->name }}",
-            description: "{{ $calonPelanggan->description }}",
-            image: "{{ asset('storage/' . $calonPelanggan->image) }}"
-        }
-    };
+        @endforeach
+    ]
+};
 
-     // Tambahkan marker calon pelanggan (CSS custom)
-     const elCalon = document.createElement('div');
-    elCalon.className = 'marker-calonpelanggan';
+function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+}
 
-    new mapboxgl.Marker(elCalon)
-        .setLngLat(calonPelangganGeoJSON.geometry.coordinates)
-        .setPopup(
-            new mapboxgl.Popup({ offset: 25 }).setHTML(`
-                <div style="overflow-y: auto; max-height: 400px; width:100%;">
-                    <table class="table table-borderless text-body">
-                        <tbody>
-                            <tr>
-                                <td colspan="2"><strong>${calonPelangganGeoJSON.properties.title}</strong></td>
-                            </tr>
-                            <tr>
-                                <td>Gambar</td>
-                                <td><img src="${calonPelangganGeoJSON.properties.image}" loading="lazy" class="img-fluid"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah</td>
-                                <td>${calonPelangganGeoJSON.properties.description}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            `)
-        )
-        .addTo(map);
+// Siapkan data ODP yang tersedia
+const availableODPs = odpGeoJSON.features
+    .filter(f => parseInt(f.properties.stok) > 0)
+    .map(f => {
+        const [lon, lat] = f.geometry.coordinates;
+        const distance = getDistance(calonLat, calonLong, lat, lon);
+        f.properties.jarak = distance.toFixed(2);
+        return f;
+    })
+    .sort((a, b) => a.properties.jarak - b.properties.jarak);
 
-        // Geojson ODP
-        const odpGeoJSON = {
-        type: 'FeatureCollection',
-        features: [
-            @foreach ($odps as $odp)
-                {
+// Marker dan garis dinamis
+let selectedODPMarker = null;
+let distancePopup = null;
+
+// Render daftar ODP
+if (availableODPs.length > 0) {
+    const odpListEl = document.getElementById("odp-list");
+    odpListEl.innerHTML = "";
+    availableODPs.forEach((odp, index) => {
+        const btn = document.createElement("button");
+        btn.className = "btn btn-outline-primary text-start mb-2";
+        btn.dataset.index = index;
+        btn.innerHTML = `
+            <strong>${odp.properties.title}</strong><br>
+            Jarak: ${odp.properties.jarak} km<br>
+            Stok: ${odp.properties.stok}
+        `;
+    odpListEl.appendChild(btn);
+});
+
+
+    odpListEl.addEventListener("click", function (e) {
+        if (e.target.tagName === "BUTTON") {
+            const selectedIndex = parseInt(e.target.dataset.index);
+            const selectedODP = availableODPs[selectedIndex];
+
+            // Highlight tombol yang dipilih
+            document.querySelectorAll("#odp-list button").forEach(btn => {
+                btn.classList.remove("btn-primary");
+                btn.classList.add("btn-outline-primary");
+            });
+            e.target.classList.remove("btn-outline-primary");
+            e.target.classList.add("btn-primary");
+
+
+            // Kurangi stok (simulasi)
+            selectedODP.properties.stok--;
+
+            // Hapus sebelumnya
+            if (selectedODPMarker) selectedODPMarker.remove();
+            if (map.getSource('line-to-odp')) {
+                map.removeLayer('line-to-odp');
+                map.removeSource('line-to-odp');
+            }
+            if (distancePopup) distancePopup.remove();
+
+            // Tambah marker hijau
+            selectedODPMarker = new mapboxgl.Marker({ color: 'green' })
+                .setLngLat(selectedODP.geometry.coordinates)
+                .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<strong>${selectedODP.properties.title}</strong><br>Jarak: ${selectedODP.properties.jarak} km`))
+                .addTo(map);
+
+            // Gambar garis
+            map.addSource('line-to-odp', {
+                type: 'geojson',
+                data: {
                     type: 'Feature',
                     geometry: {
-                        type: 'Point',
-                        coordinates: [{{ $odp->long }}, {{ $odp->lat }}]
-                    },
-                    properties: {
-                        title: "{{ $odp->name }}",
-                        port: "{{ $odp->port }}",
-                        stok: {{$odp->stok}}
+                        type: 'LineString',
+                        coordinates: [
+                            [calonLong, calonLat],
+                            selectedODP.geometry.coordinates
+                        ]
                     }
-                },
-            @endforeach
-        ]
-    };
-
-
-      // Fungsi menghitung jarak antara dua titik koordinat (Haversine)
-      function getDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371; // Radius bumi dalam km
-        const dLat = (lat2 - lat1) * Math.PI / 180;
-        const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = 
-            Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-            Math.sin(dLon/2) * Math.sin(dLon/2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c;
-    }
-
-    // Cari ODP terdekat
-    let nearestODP = null;
-    let minDistance = Infinity;
-
-    for (const feature of odpGeoJSON.features) {
-    const [lon, lat] = feature.geometry.coordinates;
-    const stok = parseInt(feature.properties.stok);
-    const distance = getDistance(calonLat, calonLong, lat, lon);
-    feature.properties.jarak = distance.toFixed(2); // Simpan ke properties
-
-    if (stok > 0 && distance < minDistance) {
-        minDistance = distance;
-        nearestODP = feature;
-    }
-}
-
-
-// add markers to map
-for (const feature of odpGeoJSON.features) {
-        const el = document.createElement('div');
-        el.className = 'marker-odp';
-}
-
-// Tambahkan marker untuk setiap ODP
-for (const feature of odpGeoJSON.features) {
-    const [lon, lat] = feature.geometry.coordinates;
-    const stok = parseInt(feature.properties.stok);
-    const port = parseInt(feature.properties.port);
-    const isPenuh = stok === 0;
-
-    const el = document.createElement('div');
-
-    if (isPenuh) {
-        el.className = 'marker-odp';
-        el.style.backgroundColor = 'red'; // ODP penuh
-        el.style.width = '25px';
-        el.style.height = '25px';
-        el.style.borderRadius = '50%';
-    } else if (feature === nearestODP) {
-        el.className = 'marker-odp';
-        el.style.backgroundColor = 'blue'; // ODP terdekat
-        el.style.width = '30px';
-        el.style.height = '30px';
-        el.style.borderRadius = '50%';
-    } else {
-        el.className = 'marker-odp'; // default dari CSS
-    }
-
-   new mapboxgl.Marker(el)
-            .setLngLat(feature.geometry.coordinates)
-            .setPopup(
-                new mapboxgl.Popup({ offset: 25 }).setHTML(`
-                    <div style="overflow-y: auto; max-height: 400px; width:100%;">
-                        <table class="table table-borderless text-body">
-                            <tbody>
-                                <tr>
-                                    <td colspan="2"><strong>${feature.properties.title}</strong></td>
-                                </tr>
-                                <tr>
-                                    <td>stok</td>
-                                    <td>${feature.properties.stok}</td>
-                                </tr>
-                                <tr>
-                                    <td>port</td>
-                                    <td>${feature.properties.port}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                `)
-            )
-            .addTo(map);
-    }
-
-    // Tambahkan garis ke ODP terdekat
-    map.on('load', () => {
-        map.addSource('line-to-odp', {
-            type: 'geojson',
-            data: {
-                type: 'Feature',
-                geometry: {
-                    type: 'LineString',
-                    coordinates: [
-                        [calonLong, calonLat],
-                        nearestODP.geometry.coordinates
-                    ]
                 }
-            }
-        });
+            });
 
-        map.addLayer({
-            id: 'line-to-odp',
-            type: 'line',
-            source: 'line-to-odp',
-            layout: {},
-            paint: {
-                'line-color': '#ff0000',
-                'line-width': 3,
-                'line-dasharray': [2, 4]
-            }
-        });
+            map.addLayer({
+                id: 'line-to-odp',
+                type: 'line',
+                source: 'line-to-odp',
+                layout: {},
+                paint: {
+                    'line-color': '#ff0000',
+                    'line-width': 3,
+                    'line-dasharray': [2, 4]
+                }
+            });
 
-        // Tambahkan label jarak
-        new mapboxgl.Popup({ closeOnClick: false })
-            .setLngLat([
-                (calonLong + nearestODP.geometry.coordinates[0]) / 2,
-                (calonLat + nearestODP.geometry.coordinates[1]) / 2
-            ])
-            .setHTML(`<strong>Jarak: ${minDistance.toFixed(2)} km</strong>`)
-            .addTo(map);
+            // Popup jarak
+            const midLng = (calonLong + selectedODP.geometry.coordinates[0]) / 2;
+            const midLat = (calonLat + selectedODP.geometry.coordinates[1]) / 2;
+
+            distancePopup = new mapboxgl.Popup({ closeOnClick: false })
+                .setLngLat([midLng, midLat])
+                .setHTML(`<strong>Jarak: ${selectedODP.properties.jarak} km</strong>`)
+                .addTo(map);
+
+            map.flyTo({ center: selectedODP.geometry.coordinates, zoom: 16 });
+        }
     });
+}
+
+// Tampilkan semua ODP dengan warna default
+odpGeoJSON.features.forEach((feature) => {
+    const color = parseInt(feature.properties.stok) === 0 ? 'red' : 'blue';
+
+    new mapboxgl.Marker({ color: color })
+        .setLngLat(feature.geometry.coordinates)
+        .setPopup(
+            new mapboxgl.Popup({ offset: 25 }).setHTML(`
+            <div style="overflow-y, auto; max-height: 400px, width:100%, ">
+                <table class="table table-borderless text-body">
+                    <tbody>
+                    <tr>
+                         <td colspan="2"><strong>${feature.properties.title}</strong></td>
+                    </tr>
+                    <tr>
+                        <td>port</td>
+                        <td>${feature.properties.port}</td>
+                    </tr>
+                    <tr>
+                        <td>stok</td>
+                        <td>${feature.properties.stok}</td>
+                    </tr>   
+                    </tbody>
+                </table>
+
+                <form action="/pilih-odp" method="POST">
+            @csrf
+            <input type="hidden" name="odp_id" value="${feature.properties.id}">
+            <input type="hidden" name="calon_id" value="{{ $calonPelanggan->id }}">
+            <button class="btn btn-primary mt-2" type="submit">Pilih ODP Ini</button>
+        </form>
+                </div>`)
+    )
+    .addTo(map);
+});
+
+map.addControl(new mapboxgl.NavigationControl());
+    
 </script>
 @endsection
 
