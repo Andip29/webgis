@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CalonPelanggan;
 use App\Models\Odp;
+use Illuminate\Support\Facades\Log;
+
 
 class CalonPelangganController extends Controller
 {
@@ -51,7 +53,8 @@ class CalonPelangganController extends Controller
     {
         $odps = Odp::all();
         $calonPelanggan = CalonPelanggan::findOrFail($calonPelanggan);
-        return view('calonpelanggan.show', compact('calonPelanggan', 'odps'));
+        $selectedOdpId = $calonPelanggan->odp_id;
+        return view('calonpelanggan.show', compact('calonPelanggan', 'odps', 'selectedOdpId'));
     }
 
     /**
@@ -91,5 +94,42 @@ class CalonPelangganController extends Controller
         $calonPelanggan = CalonPelanggan::findOrFail($calonPelanggan);
         $calonPelanggan->delete();
         return redirect()->route('calonpelanggan.index')->with('success', 'Data berhasil dihapus.');
+    }
+
+    public function simpanODP(Request $request, $id)
+    {
+        $request->validate([
+            'odp_id' => 'required|exists:odps,id',
+        ]);
+
+        $calonPelanggan = CalonPelanggan::findOrFail($id);
+
+        // Cegah penyimpanan ulang ODP yang sama
+        if ($calonPelanggan->odp_id == $request->odp_id) {
+            return response()->json(['error' => 'ODP ini sudah dipilih oleh calon pelanggan ini.'], 400);
+        }
+
+        // Jika sebelumnya sudah ada ODP, kembalikan stok
+        if ($calonPelanggan->odp_id) {
+            $odpLama = Odp::find($calonPelanggan->odp_id);
+            if ($odpLama) {
+                $odpLama->stok++;
+                $odpLama->save();
+            }
+        }
+
+        // Simpan ODP baru
+        $odpBaru = Odp::findOrFail($request->odp_id);
+        if ($odpBaru->stok <= 0) {
+            return response()->json(['error' => 'Stok ODP tidak tersedia.'], 400);
+        }
+
+        $odpBaru->stok--;
+        $odpBaru->save();
+
+        $calonPelanggan->odp_id = $odpBaru->id;
+        $calonPelanggan->save();
+
+        return response()->json(['message' => 'ODP berhasil dipilih.']);
     }
 }

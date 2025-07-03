@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\CalonPelangganController;
+use App\Models\CalonPelanggan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,3 +30,4 @@ route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 route::get('map', [MapController::class, 'index'])->name('map.index')->middleware('auth');
 Route::post('/map/import', [MapController::class, 'import'])->name('map.import')->middleware('auth');
 Route::resource('calonpelanggan', CalonPelangganController::class)->middleware('auth');
+Route::post('/calon-pelanggan/{id}/pilih-odp', [CalonPelangganController::class, 'simpanODP']);

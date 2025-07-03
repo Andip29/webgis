@@ -4,7 +4,8 @@
 <div class="container">
     <h3>Daftar Calon Pelanggan</h3>
     <a href="{{ route('calonpelanggan.create') }}" class="btn btn-primary mb-3">+ Tambah Data</a>
-    <table class="table table-bordered">
+    <div class="table-responsive">
+    <table class="table table-bordered" id="table">
         <thead>
             <tr>
                 <th>Nama</th>
@@ -16,6 +17,19 @@
             </tr>
         </thead>
         <tbody>
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             
             @foreach($calonPelanggans as $data)
             <tr>
@@ -36,6 +50,7 @@
             @endforeach
         </tbody>
     </table>
+    </div>
 </div>
 @endsection
 

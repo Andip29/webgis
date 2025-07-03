@@ -17,4 +17,9 @@ class CalonPelanggan extends Model
         'lat',
         'long',
     ];
+
+    public function odp()
+    {
+        return $this->belongsTo(Odp::class);
+    }
 }

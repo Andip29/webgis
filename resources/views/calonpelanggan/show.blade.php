@@ -47,8 +47,11 @@
     </div>
 
     <div id="odp-list-container" class="mt-4">
-    <h3>Pilih ODP Terdekat:</h3>
-    <div id="odp-list" class="btn-group-vertical" role="group" aria-label="Daftar ODP"></div>
+        <h3>Pilih ODP Terdekat:</h3>
+        <div id="odp-list" class="d-flex flex-wrap gap-2 mb-3" role="group" aria-label="Daftar ODP"></div>
+         <button id="save-odp-btn" class="btn btn-success" disabled>Simpan ODP</button>
+    </div>
+
 </div>
 </div>
 </div>
@@ -56,15 +59,16 @@
 @section('maps')
 <script>
    mapboxgl.accessToken = '{{ env("MAPBOX_KEY") }}';
-const calonLat = {{ $calonPelanggan->lat }};
-const calonLong = {{ $calonPelanggan->long }};
+    const calonLat = {{ $calonPelanggan->lat }};
+    const calonLong = {{ $calonPelanggan->long }};
+    const selectedOdpId = {{ $selectedOdpId ?? 'null' }};
 
-const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v11',
-    center: [calonLong, calonLat],
-    zoom: 15
-});
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [calonLong, calonLat],
+        zoom: 15
+    });
 
 // Marker Calon Pelanggan
 new mapboxgl.Marker({ color: 'yellow' }) // 
@@ -89,6 +93,7 @@ const odpGeoJSON = {
                 coordinates: [{{ $odp->long }}, {{ $odp->lat }}]
             },
             properties: {
+                id: {{ $odp->id }},
                 title: "{{ $odp->name }}",
                 port: "{{ $odp->port }}",
                 stok: {{ $odp->stok }}
@@ -121,9 +126,11 @@ const availableODPs = odpGeoJSON.features
     })
     .sort((a, b) => a.properties.jarak - b.properties.jarak);
 
-// Marker dan garis dinamis
+
 let selectedODPMarker = null;
 let distancePopup = null;
+let previousODPId = selectedOdpId;
+let selectedODP = null;
 
 // Render daftar ODP
 if (availableODPs.length > 0) {
@@ -138,14 +145,28 @@ if (availableODPs.length > 0) {
             Jarak: ${odp.properties.jarak} km<br>
             Stok: ${odp.properties.stok}
         `;
+
+        // Tambahkan pengecekan jika ODP ini sudah dipilih
+    if (odp.properties.id === selectedOdpId) {
+        btn.disabled = true;
+        btn.classList.remove("btn-outline-primary");
+        btn.classList.add("btn-success");
+        btn.innerHTML += "<br><em>ODP Terpilih</em>";
+    }
     odpListEl.appendChild(btn);
 });
 
 
     odpListEl.addEventListener("click", function (e) {
         if (e.target.tagName === "BUTTON") {
+            const button = e.target.closest("button");
             const selectedIndex = parseInt(e.target.dataset.index);
-            const selectedODP = availableODPs[selectedIndex];
+            selectedODP = availableODPs[selectedIndex];
+            if (selectedODP.properties.id === selectedOdpId) {
+                document.getElementById("save-odp-btn").disabled = true;
+            } else {
+                document.getElementById("save-odp-btn").disabled = false;
+            }
 
             // Highlight tombol yang dipilih
             document.querySelectorAll("#odp-list button").forEach(btn => {
@@ -156,9 +177,6 @@ if (availableODPs.length > 0) {
             e.target.classList.add("btn-primary");
 
 
-            // Kurangi stok (simulasi)
-            selectedODP.properties.stok--;
-
             // Hapus sebelumnya
             if (selectedODPMarker) selectedODPMarker.remove();
             if (map.getSource('line-to-odp')) {
@@ -167,7 +185,7 @@ if (availableODPs.length > 0) {
             }
             if (distancePopup) distancePopup.remove();
 
-            // Tambah marker hijau
+            // Tambah marker hijau  
             selectedODPMarker = new mapboxgl.Marker({ color: 'green' })
                 .setLngLat(selectedODP.geometry.coordinates)
                 .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<strong>${selectedODP.properties.title}</strong><br>Jarak: ${selectedODP.properties.jarak} km`))
@@ -214,6 +232,91 @@ if (availableODPs.length > 0) {
     });
 }
 
+// Tombol Simpan
+document.getElementById("save-odp-btn").addEventListener("click", () => {
+    if (!selectedODP) {
+        alert("Silakan pilih ODP terlebih dahulu.");
+        return;
+    }
+
+    fetch(`/calon-pelanggan/{{ $calonPelanggan->id }}/pilih-odp`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+        },
+        body: JSON.stringify({ odp_id: selectedODP.properties.id })
+    })
+    .then(async res => {
+    const data = await res.json();
+    if (res.ok) {
+        alert(data.message || "ODP berhasil disimpan.");
+        location.reload();
+    } else {
+        alert(data.error || "Gagal menyimpan ODP.");
+    }
+})
+    .catch(err => {
+        console.error("Error:", err);
+        alert("Terjadi kesalahan.");
+    });
+});
+
+map.on('load', function () {
+    // Render ulang ODP yang sudah disimpan (selectedOdpId) dengan garis dan marker hijau
+    if (selectedOdpId) {
+        const matchedODP = odpGeoJSON.features.find(f => f.properties.id === selectedOdpId);
+        if (matchedODP) {
+            const [odpLong, odpLat] = matchedODP.geometry.coordinates;
+
+            // Marker hijau untuk ODP yang tersimpan
+            new mapboxgl.Marker({ color: 'green' })
+                .setLngLat(matchedODP.geometry.coordinates)
+                .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<strong>${matchedODP.properties.title}</strong><br>ODP Terpilih`))
+                .addTo(map);
+
+            // Garis ke ODP
+            if (!map.getSource('line-to-odp')) {
+                map.addSource('line-to-odp', {
+                    type: 'geojson',
+                    data: {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'LineString',
+                            coordinates: [
+                                [calonLong, calonLat],
+                                matchedODP.geometry.coordinates
+                            ]
+                        }
+                    }
+                });
+
+                map.addLayer({
+                    id: 'line-to-odp',
+                    type: 'line',
+                    source: 'line-to-odp',
+                    layout: {},
+                    paint: {
+                        'line-color': '#ff0000',
+                        'line-width': 3,
+                        'line-dasharray': [2, 4]
+                    }
+                });
+
+                // Popup jarak
+                const midLng = (calonLong + odpLong) / 2;
+                const midLat = (calonLat + odpLat) / 2;
+
+                new mapboxgl.Popup({ closeOnClick: false })
+                    .setLngLat([midLng, midLat])
+                    .setHTML(`<strong>ODP Terpilih</strong>`)
+                    .addTo(map);
+            }
+        }
+    }
+});
+
+
 // Tampilkan semua ODP dengan warna default
 odpGeoJSON.features.forEach((feature) => {
     const color = parseInt(feature.properties.stok) === 0 ? 'red' : 'blue';
@@ -238,13 +341,6 @@ odpGeoJSON.features.forEach((feature) => {
                     </tr>   
                     </tbody>
                 </table>
-
-                <form action="/pilih-odp" method="POST">
-            @csrf
-            <input type="hidden" name="odp_id" value="${feature.properties.id}">
-            <input type="hidden" name="calon_id" value="{{ $calonPelanggan->id }}">
-            <button class="btn btn-primary mt-2" type="submit">Pilih ODP Ini</button>
-        </form>
                 </div>`)
     )
     .addTo(map);

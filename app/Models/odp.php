@@ -11,4 +11,9 @@ class Odp extends Model
 
     protected $table = "odps";
     protected $fillable = ['name', 'stok', 'port', 'lat', 'long'];
+
+    public function calonPelanggans()
+    {
+        return $this->hasMany(CalonPelanggan::class);
+    }
 }

@@ -23,17 +23,10 @@ class OdpSeeder extends Seeder
             ],
             [
                 'name' => 'ODP B',
-                'stok' => 0,
+                'stok' => 1,
                 'port' => 8,
                 'lat' => -6.9922173,
                 'long' => 107.8426513,
-            ],
-            [
-                'name' => 'ODP C',
-                'stok' => 0,
-                'port' => 16,
-                'lat' => -6.985024,
-                'long' => 107.839293,
             ],
         ];
 

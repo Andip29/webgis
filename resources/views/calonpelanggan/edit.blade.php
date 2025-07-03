@@ -23,26 +23,44 @@
                 <div class="mb-3">
                     <label>Nama</label>
                     <input type="text" name="name" value="{{ $calonPelanggan->name }}" class="form-control">
+                    @error('name')
+                        <small class="text text-danger"> {{ $message }} </small>
+                    @enderror
                 </div>
                 <div class="mb-3">
                     <label>Email</label>
                     <input type="email" name="email" value="{{ $calonPelanggan->email }}" class="form-control">
+                    @error('email')
+                        <small class="text text-danger"> {{ $message }} </small>
+                    @enderror
                 </div>
                 <div class="mb-3">
                     <label>No Telepon</label>
                     <input type="text" name="no_telp" value="{{ $calonPelanggan->no_telp }}" class="form-control">
+                    @error('not_telp')
+                        <small class="text text-danger"> {{ $message }} </small>
+                    @enderror
                 </div>
                 <div class="mb-3">
                     <label>Alamat</label>
                     <textarea name="alamat" class="form-control">{{ $calonPelanggan->alamat }}</textarea>
+                    @error('alamat')
+                        <small class="text text-danger"> {{ $message }} </small>
+                    @enderror
                 </div>
                 <div class="mb-3">
                     <label>Latitude</label>
                     <input type="text" name="lat" id="lat" value="{{ $calonPelanggan->lat }}" class="form-control">
+                    @error('lat')
+                        <small class="text text-danger"> {{ $message }} </small>
+                    @enderror
                 </div>
                 <div class="mb-3">
                     <label>Longitude</label>
                     <input type="text" name="long" id="long" value="{{ $calonPelanggan->long }}" class="form-control">
+                    @error('long')
+                        <small class="text text-danger"> {{ $message }} </small>
+                    @enderror
                 </div>
                 <button class="btn btn-primary">Update</button>
             </form>
