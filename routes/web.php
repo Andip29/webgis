@@ -30,5 +30,5 @@ route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 route::get('map', [MapController::class, 'index'])->name('map.index')->middleware('auth');
 Route::post('/map/import', [MapController::class, 'import'])->name('map.import')->middleware('auth');
 Route::resource('calonpelanggan', CalonPelangganController::class)->middleware('auth');
-Route::post('/calon-pelanggan/{id}/pilih-odp', [CalonPelangganController::class, 'simpanODP']);
+Route::post('/calonpelanggan/{id}/pilih-odp', [CalonPelangganController::class, 'simpanODP']);
 Route::patch('/calonpelanggan/{id}/update-status', [CalonPelangganController::class, 'updateStatus'])->name('calonpelanggan.updateStatus');

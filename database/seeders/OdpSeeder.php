@@ -15,14 +15,14 @@ class OdpSeeder extends Seeder
     {
         $odps = [
             [
-                'name' => 'ODP A',
+                'name' => 'ODP 1',
                 'stok' => 2,
                 'port' => 16,
                 'lat' => -6.9874731,
                 'long' => 107.8404948,
             ],
             [
-                'name' => 'ODP B',
+                'name' => 'ODP 2',
                 'stok' => 1,
                 'port' => 8,
                 'lat' => -6.9922173,

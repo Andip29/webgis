@@ -55,10 +55,13 @@
                     <div class="d-flex gap-1 flex-wrap">
                     <a href="{{ route('calonpelanggan.show', $data->id) }}" class="btn btn-info btn-sm">Lihat</a>
                     <a href="{{ route('calonpelanggan.edit', $data->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('calonpelanggan.destroy', $data->id) }}" method="POST" style="display:inline;">
-                        @csrf @method('DELETE')
-                        <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')">Hapus</button>
-                    </form>
+                    <button 
+                        class="btn btn-danger btn-sm btn-hapus" 
+                        data-id="{{ $data->id }}" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#modalHapus">
+                        Hapus
+                    </button>
                     </div>
                 </td>
             </tr>
@@ -66,7 +69,45 @@
         </tbody>
     </table>
     </div>
+
+        <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="modalHapus" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <form action="{{ route('calonpelanggan.destroy', $data->id)}}" id="hapusForm" method="POST">
+            @csrf
+            @method('DELETE')
+            <div class="modal-header">
+            <h5 class="modal-title" id="modalHapusLabel">Konfirmasi Hapus</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body">
+            Apakah Anda yakin ingin menghapus data calon pelanggan ini?
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-danger">Hapus</button>
+            </div>
+        </form>
+        </div>
+    </div>
+    </div>
+
 </div>
 @endsection
 
+@section('scripts')
+<script>
+    const modal = document.getElementById('modalHapus');
+    const form = document.getElementById('hapusForm');
+
+    modal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const id = button.getAttribute('data-id');
+
+        // Ubah action form
+        form.action = `/calonpelanggan/${id}`;
+    });
+</script>
+@endsection
 
