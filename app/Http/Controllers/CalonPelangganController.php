@@ -15,7 +15,7 @@ class CalonPelangganController extends Controller
      */
     public function index()
     {
-        $calonPelanggans = CalonPelanggan::all();
+        $calonPelanggans = CalonPelanggan::with('odp')->get();
         return view('calonpelanggan.index', compact('calonPelanggans'));
     }
 
@@ -84,6 +84,20 @@ class CalonPelangganController extends Controller
         $calonPelanggan->update($request->all());
 
         return redirect()->route('calonpelanggan.index')->with('success', 'Data berhasil diperbarui.');
+    }
+
+    // Update Status ODP
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:terpasang,belum_terpasang'
+        ]);
+
+        $calonPelanggan = CalonPelanggan::findOrFail($id);
+        $calonPelanggan->status = $request->status;
+        $calonPelanggan->save();
+
+        return redirect()->back()->with('success', 'Status berhasil diperbarui');
     }
 
     /**

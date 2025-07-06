@@ -31,3 +31,4 @@ route::get('map', [MapController::class, 'index'])->name('map.index')->middlewar
 Route::post('/map/import', [MapController::class, 'import'])->name('map.import')->middleware('auth');
 Route::resource('calonpelanggan', CalonPelangganController::class)->middleware('auth');
 Route::post('/calon-pelanggan/{id}/pilih-odp', [CalonPelangganController::class, 'simpanODP']);
+Route::patch('/calonpelanggan/{id}/update-status', [CalonPelangganController::class, 'updateStatus'])->name('calonpelanggan.updateStatus');

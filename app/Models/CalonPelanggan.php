@@ -16,6 +16,8 @@ class CalonPelanggan extends Model
         'alamat',
         'lat',
         'long',
+        'odp_id',
+        'status'
     ];
 
     public function odp()

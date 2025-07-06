@@ -32,8 +32,8 @@
         </tr>
     </table>
 
-
-    <div class="col-md-10">
+<div class="row">
+    <div class="col-md-8">
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">Our Location</h5>
@@ -45,6 +45,23 @@
             </div>
         </div>
     </div>
+
+    <div class="col-md-4">
+        @if($calonPelanggan->odp)
+        <div class="card mt-4">
+            <div class="card-header bg-success text-white">
+                <strong>ODP Terpilih</strong>
+            </div>
+            <div class="card-body">
+                <p><strong>Nama ODP:</strong> {{ $calonPelanggan->odp->name }}</p>
+                <p><strong>Jumlah Port:</strong> {{ $calonPelanggan->odp->port }}</p>
+                <p><strong>Sisa Stok:</strong> {{ $calonPelanggan->odp->stok }}</p>
+                <p><strong>Koordinat:</strong> {{ $calonPelanggan->odp->lat }}, {{ $calonPelanggan->odp->long }}</p>
+            </div>
+        </div>
+        @endif
+    </div>
+</div>
 
     <div id="odp-list-container" class="mt-4">
         <h3>Pilih ODP Terdekat:</h3>
@@ -103,6 +120,7 @@ const odpGeoJSON = {
     ]
 };
 
+// menghitung jarak
 function getDistance(lat1, lon1, lat2, lon2) {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -117,12 +135,11 @@ function getDistance(lat1, lon1, lat2, lon2) {
 
 // Siapkan data ODP yang tersedia
 const availableODPs = odpGeoJSON.features
-    .filter(f => parseInt(f.properties.stok) > 0)
-    .map(f => {
+    .filter(f => {
         const [lon, lat] = f.geometry.coordinates;
         const distance = getDistance(calonLat, calonLong, lat, lon);
         f.properties.jarak = distance.toFixed(2);
-        return f;
+        return distance <= 2 && parseInt(f.properties.stok) > 0;
     })
     .sort((a, b) => a.properties.jarak - b.properties.jarak);
 
