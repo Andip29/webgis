@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('port');
             $table->double('lat', 20, 10);
             $table->double('long', 20, 10);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

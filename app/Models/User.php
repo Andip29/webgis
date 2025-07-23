@@ -42,4 +42,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function calonPelanggans()
+    {
+        return $this->hasMany(CalonPelanggan::class);
+    }
+
+    public function odps()
+    {
+        return $this->hasMany(Odp::class);
+    }
 }

@@ -24,4 +24,9 @@ class CalonPelanggan extends Model
     {
         return $this->belongsTo(Odp::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('alamat');
             $table->double('lat', 15, 8);
             $table->double('long', 15, 8);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

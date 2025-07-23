@@ -16,4 +16,9 @@ class Odp extends Model
     {
         return $this->hasMany(CalonPelanggan::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
